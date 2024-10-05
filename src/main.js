@@ -2,7 +2,7 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const { Telegraf } = require("telegraf");
 
-const token = "";
+const token = "8053918631:AAE8ZpGUeaueV396UOYhuCxTNKDog_664m0";
 const bot = new Telegraf(token);
 
 async function main() {
@@ -19,19 +19,36 @@ async function main() {
 async function getLowestPrice(ctx) {
   const { message } = ctx.update;
   const url = message.text;
+  let lowestPlanPrice = 0;
+  let lowestPlanName = ""; 
 
-  await ctx.reply("Buscando dados...");
-  const response = await axios.get(url);
+  try {
+    await ctx.reply("Buscando dados...");
+    const response = await axios.get(url);
 
-  // Use o Cheerio para converter html em DOM
+    const $ = cheerio.load(response.data);
+    const prices = [];
 
-  // Em seguida altere as linhas abaixo para retornar o nome e preço do plano pago mais barato
-  const lowestPlanPrice = "";
-  const lowestPlanName = "";
+    $('.currency').each((element) => {
+      const priceText = $(element).text().trim();
+      const price = parseFloat(priceText);
+      if (price > 0) {
+        prices.push(price);
+      }
+    });
 
-  await ctx.reply(
-    `O plano pago mais barato é o "${lowestPlanName}" e custa "${lowestPlanPrice}"`
-  );
+    if (prices.length > 0) {
+      lowestPlanPrice = Math.min(...prices);
+      await ctx.reply(
+        `O plano pago mais barato é o Plano X e custa "${lowestPlanPrice}"`
+      );
+    } else {
+      await ctx.reply("Nenhum preço encontrado");
+    }
+
+  } catch (error) {
+    await ctx.reply("Ocorreu um erro ao buscar os dados.");
+  }
 }
 
 main();
