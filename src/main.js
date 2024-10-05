@@ -2,7 +2,7 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const { Telegraf } = require("telegraf");
 
-const token = "8053918631:AAE8ZpGUeaueV396UOYhuCxTNKDog_664m0";
+const token = "Adicione o Token do seu bot";
 const bot = new Telegraf(token);
 
 async function main() {
