@@ -10,3 +10,13 @@ Segue abaixo as instruções para a execução do teste.
 - Ao concluir o teste, o link do repositório deverá ser enviado para o e-mail jeff@divulgadorinteligente.com com o título **Teste Vaga Fullstack estágio**
 
 **Boa sorte! ;)**
+
+## O que alterei
+
+- Adicionei as formas de buscar o preço e nome dos planos do site
+- Devolvi uma mensagem ao usuário informando o nome e preço do plano mais barato
+- Adicionei uma forma de buscar os centavos do valor e adiciona-los aos preços inteiros para informar aos clientes, prevendo futuras alterações.
+  
+## Colaborador
+- Guilherme Alves Pedroso
+
