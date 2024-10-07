@@ -19,7 +19,7 @@ async function main() {
 async function getLowestPrice(ctx) {
   const { message } = ctx.update;
   const linkRegex = /https:\/\/www\.divulgadorinteligente\.com\//i;
-  const url = message.text.match(linkRegex);
+  const url = message.text.match(linkRegex); //Acha o link do site no meio da mensagem
   let lowestPlanPrice = 0;
   let lowestPlanName = ""; 
 
@@ -34,7 +34,7 @@ async function getLowestPrice(ctx) {
     $('.head').each((i,element) => {
       const name = $(element).text().trim();
       planNames.push(name);
-    })
+    }) //Pega o nome de todos os planos disponiveis no site
 
     $('.currency').each((i,   element) => {
       const priceText = $(element).text().trim();
@@ -42,7 +42,7 @@ async function getLowestPrice(ctx) {
       if (price > 0) {
         prices.push(price);
       }
-    });
+    });//Pega o preço inteiro dos planos
 
     $('.cent').each((i,   element) => {
       if(!isNaN(element)){
@@ -50,18 +50,20 @@ async function getLowestPrice(ctx) {
         const cent = parseFloat(centText);
         prices[i] =+ (cent/100)
       }
-    });
+    });/*Verifica se há centavos no preço, se houver os adiciona ao valor do preço para ser informado 
+    ao cliente
+    */
 
-    if (prices.length > 0) {
-      lowestPlanPrice = Math.min(...prices);
-      const lowestPriceIndex = prices.findIndex(price => price === lowestPlanPrice);
-      lowestPlanName = planNames[lowestPriceIndex]
+    if (prices.length > 0) {//Se houver preços identifficados dentro da lista
+      lowestPlanPrice = Math.min(...prices);//Define o menor
+      const lowestPriceIndex = prices.findIndex(price => price === lowestPlanPrice);//Pega o indice do menor preço
+      lowestPlanName = planNames[lowestPriceIndex]//Utiliza o indice para pegar o nome do respectivo plano
       await ctx.reply(
         `O plano pago mais barato é o "${lowestPlanName}" e custa R$${lowestPlanPrice}`
       );
     } else {
       await ctx.reply("Nenhum preço encontrado");
-    }
+    }//Devolve essa mensagem caso nenhum plano não seja detectado
 
   } catch (error) {
     console.error("Erro ao buscar os dados:", error);
